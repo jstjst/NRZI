@@ -15,8 +15,8 @@ int main (void)
   TCCR0A |= _BV(WGM01); //CTC (TOP at OCR0A)
   TCCR0B |= _BV(CS00) | _BV(CS01);  // clk/64
 
-  OCR0A |= 208;         //Overflow after 208 cycles (833µs/1200Hz)
-  OCR0B |= 104;         //Overflow after 104 cycles (416µs)
+  OCR0A = 208;         //Overflow after 208 cycles (833µs/1200Hz)
+  OCR0B = 104;         //Overflow after 104 cycles (416µs)
 
   TIMSK0 |= _BV(OCIE0B);  //Interrupt at OCR0B
 
@@ -37,11 +37,11 @@ ISR(TIMER0_COMPB_vect)
   PORTD ^= _BV(PORTD7);
   if (PIND & _BV(PIND2))
   {
-    TCCR0A |= _BV(COM0A0) | _BV(COM0A1);   //Set OC0A on Compare Match
+    //TCCR0A |= _BV(COM0A0) | _BV(COM0A1);   //Set OC0A on Compare Match
   }
   else
   {
-    TCCR0A &= ~_BV(COM0A0);   //Clear OC0A on Compare Match
-    TCCR0A |=  _BV(COM0A1);
+    //TCCR0A &= ~_BV(COM0A0);   //Clear OC0A on Compare Match
+    //TCCR0A |=  _BV(COM0A1);
   }
 }
