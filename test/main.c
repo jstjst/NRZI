@@ -10,7 +10,7 @@ int main (void)
   EIMSK |= _BV(INT0);    //enable INT0
   EICRA |= _BV(ISC00);  //INT0 at change
 
-  DDRD |= _BV(DDD6);    //PD5(OC0A) Output
+  DDRD |= _BV(DDD6) | _BV(DDD7);    //PD6(OC0A) Output
 
   TCCR0A |= _BV(WGM01); //CTC (TOP at OCR0A)
   TCCR0B |= _BV(CS00) | _BV(CS01);  // clk/64
@@ -34,6 +34,7 @@ ISR(INT0_vect)
 
 ISR(TIMER0_COMPB_vect)
 {
+  PORTD |= _BV(PORTD7);
   if (PIND & _BV(PIND2))
   {
     TCCR0A |= _BV(COM0A0) | _BV(COM0A1);   //Set OC0A on Compare Match
