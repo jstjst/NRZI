@@ -29,7 +29,7 @@ int main (void)
 ISR(INT0_vect)
 {
   TCNT0 = 0;    //clear timer to synchronize
-  TCCR0B |= _BV(FOC0A);   //Fource Output Compare
+  TCCR0B ^= _BV(FOC0A);   //Fource Output Compare
 }
 
 ISR(TIMER0_COMPB_vect)
