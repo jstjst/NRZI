@@ -29,12 +29,12 @@ int main (void)
 ISR(INT0_vect)
 {
   TCNT0 = 0;    //clear timer to synchronize
-  TCCR0B ^= _BV(FOC0A);   //Fource Output Compare
+  TCCR0B |= _BV(FOC0A);   //Fource Output Compare
 }
 
 ISR(TIMER0_COMPB_vect)
 {
-  PORTD |= _BV(PORTD7);
+  PORTD ^= _BV(PORTD7);
   if (PIND & _BV(PIND2))
   {
     TCCR0A |= _BV(COM0A0) | _BV(COM0A1);   //Set OC0A on Compare Match
