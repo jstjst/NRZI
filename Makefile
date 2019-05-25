@@ -12,13 +12,13 @@
 MCU = atmega328p
 
 # Target file name (without extension).
-TARGET = images/NRZI
+TARGET = main
 
 # Programming hardware: type avrdude -c ?
 # to get a full listing.
-AVRDUDE_PROGRAMMER = arduino       
+AVRDUDE_PROGRAMMER = arduino
 
-AVRDUDE_PORT = /dev/usb    # not really needed for usb 
+AVRDUDE_PORT = /dev/usb    # not really needed for usb
 #AVRDUDE_PORT = /dev/parport0           # linux
 # AVRDUDE_PORT = lpt1		       # windows
 
@@ -33,7 +33,7 @@ FORMAT = ihex
 
 # List C source files here. (C dependencies are automatically generated.)
 #SRC = $(TARGET).c
-SRC = main.c hardware/Serial.c hardware/AFSK.c util/CRC-CCIT.c protocol/AX25.c protocol/KISS.c protocol/SimpleSerial.c
+SRC = $(TARGET).c
 
 # If there is more than one source file, append them above, or modify and
 # uncomment the following:
@@ -52,12 +52,12 @@ SRC = main.c hardware/Serial.c hardware/AFSK.c util/CRC-CCIT.c protocol/AX25.c p
 # Even though the DOS/Win* filesystem matches both .s and .S the same,
 # it will preserve the spelling of the filenames, and gcc itself does
 # care about how the name is spelled on its command-line.
-ASRC = 
+ASRC =
 
 
 # List any extra directories to look for include files here.
 #     Each directory must be seperated by a space.
-EXTRAINCDIRS = 
+EXTRAINCDIRS =
 
 
 # Optional compiler flags.
@@ -91,7 +91,7 @@ CFLAGS += -std=gnu99
 #             for use in COFF files, additional information about filenames
 #             and function names needs to be present in the assembler source
 #             files -- see avr-libc docs [FIXME: not yet described there]
-ASFLAGS = -Wa,-adhlns=$(<:.S=.lst),-gstabs 
+ASFLAGS = -Wa,-adhlns=$(<:.S=.lst),-gstabs
 
 
 
@@ -133,7 +133,7 @@ AVRDUDE_FLAGS = -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER)
 #AVRDUDE_FLAGS += -V
 
 # Increase verbosity level.  Please use this when submitting bug
-# reports about avrdude. See <http://savannah.nongnu.org/projects/avrdude> 
+# reports about avrdude. See <http://savannah.nongnu.org/projects/avrdude>
 # to submit bug reports.
 #AVRDUDE_FLAGS += -v -v
 
@@ -176,7 +176,7 @@ ELFSIZE = $(SIZE) --mcu=$(MCU) -C $(TARGET).elf
 MSG_ERRORS_NONE = Firmware compiled successfully!
 MSG_BEGIN = Starting build...
 MSG_END = --------  Done  --------
-MSG_SIZE_BEFORE = Size before: 
+MSG_SIZE_BEFORE = Size before:
 MSG_SIZE_AFTER = Size after:
 MSG_COFF = Converting to AVR COFF:
 MSG_EXTENDED_COFF = Converting to AVR Extended COFF:
@@ -193,7 +193,7 @@ MSG_CLEANING = Cleaning project:
 
 
 # Define all object files.
-OBJ = $(SRC:.c=.o) $(ASRC:.S=.o) 
+OBJ = $(SRC:.c=.o) $(ASRC:.S=.o)
 
 # Define all listing files.
 LST = $(ASRC:.S=.lst) $(SRC:.c=.lst)
@@ -238,7 +238,7 @@ sizeafter:
 
 
 # Display compiler version information.
-gccversion : 
+gccversion :
 	@$(CC) --version
 
 
@@ -250,7 +250,7 @@ COFFCONVERT=$(OBJCOPY) --debugging \
 	--change-section-address .data-0x800000 \
 	--change-section-address .bss-0x800000 \
 	--change-section-address .noinit-0x800000 \
-	--change-section-address .eeprom-0x810000 
+	--change-section-address .eeprom-0x810000
 
 
 coff: $(TARGET).elf
@@ -267,7 +267,7 @@ extcoff: $(TARGET).elf
 
 
 
-# Program the device.  
+# Program the device.
 program: $(TARGET).hex $(TARGET).eep
 	@$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
 
@@ -355,8 +355,8 @@ cleanup:
 	@$(REMOVE) $(SRC:.c=.d)
 	@$(REMOVE) $(LST)
 
-# Automatically generate C source code dependencies. 
-# (Code originally taken from the GNU make user manual and modified 
+# Automatically generate C source code dependencies.
+# (Code originally taken from the GNU make user manual and modified
 # (See README.txt Credits).)
 #
 # Note that this will work with sh (bash) and sed that is shipped with WinAVR
